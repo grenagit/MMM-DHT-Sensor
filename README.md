@@ -6,21 +6,6 @@ This module gets data form DHT11, DHT22 and AM2302 sensors.
 
 ![](MMM-DHT-Sensor.png)
 
-## bcm2835
-
-This module uses [node-dht-sensor](https://github.com/momenso/node-dht-sensor) to get the sensor data, and this module depends on [bcm2835](http://www.airspayce.com/mikem/bcm2835/) to do so, therefore you need to install it in your Pi in order to use this module.
-
-```bash
-cd ~
-wget http://www.airspayce.com/mikem/bcm2835/bcm2835-1.52.tar.gz
-tar zxvf bcm2835-1.52.tar.gz
-cd bcm2835-1.52
-./configure
-make
-sudo make check
-sudo make install
-```
-
 ## Installation
 
 ```bash
@@ -77,7 +62,6 @@ This module implements the following notifications:
 
 ## Dependencies
 
-- [bcm2835](http://www.airspayce.com/mikem/bcm2835/)
 - [node-dht-sensor](https://github.com/momenso/node-dht-sensor) (installed via `npm install`)
 
 ## Issues
