@@ -3,7 +3,10 @@
 /* Magic Mirror
  * Module: MMM-DHT-Sensor
  *
- * By Ricardo Gonzalez http://www.github.com/ryck/MMM-DHT-Sensor
+ * Magic Mirror By Michael Teeuw https://magicmirror.builders
+ * MIT Licensed.
+ *
+ * Module MMM-DHT-Sensor By Grena https://github.com/grenagit
  * MIT Licensed.
  */
 
@@ -11,35 +14,28 @@ const NodeHelper = require("node_helper");
 const sensor = require("node-dht-sensor");
 
 module.exports = NodeHelper.create({
-  start: function () {
-    console.log("MMM-DHT-Sensor helper started ...");
-  },
-  /**
-   * readSensor()
-   * Requests sensor data.
-   */
-  readSensor: function (sensorPin, sensorType) {
-    var self = this;
-    sensor.read(sensorType, sensorPin, function (err, temperature, humidity) {
-      if (!err) {
-        self.sendSocketNotification("SENSOR_DATA", {
-          temperature: temperature.toFixed(2),
-          humidity: humidity.toFixed(2),
-        });
-      } else {
-        self.sendSocketNotification("SENSOR_DATA", {
-          temperature: null,
-          humidity: null,
-        });
-        console.log(err);
-      }
-    });
-  },
 
-  //Subclass socketNotificationReceived received.
-  socketNotificationReceived: function (notification, payload) {
-    if (notification === "GET_SENSOR_DATA") {
-      this.readSensor(payload.sensorPin, payload.sensorType);
-    }
-  },
+	readSensor: function() {
+		var self = this;
+		sensor.read(self.config.sensorType, self.config.sensorPin, function(err, temperature, humidity) {
+			if(!err) {
+				self.sendSocketNotification("DATA", {
+					temperature: temperature,
+					humidity: humidity,
+				});
+			} else {
+				self.sendSocketNotification("ERROR", err);
+			}
+		});
+	},
+
+	socketNotificationReceived: function(notification, payload) {
+		var self = this;
+		if (notification === 'CONFIG') {
+			self.config = payload;
+			self.sendSocketNotification("STARTED", true);
+			self.readSensor();
+		}
+	}
+	
 });

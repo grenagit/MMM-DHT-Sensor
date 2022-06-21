@@ -1,57 +1,84 @@
-# MMM-DHT-Sensor
+# Module: MMM-DHT-Sensor
+This module displays the current temperature and humidity form DHT11, DHT22 and AM2302 sensors. It's a global rewrite of https://github.com/ryck/MMM-DHT-Sensor
 
-This a module for the [MagicMirror](https://github.com/MichMich/MagicMirror).
+![](MMM-DHT-Sensor_screenshot.png)
 
-This module gets data form DHT11, DHT22 and AM2302 sensors.
+[MagicMirror Project on Github](https://github.com/MichMich/MagicMirror)
 
-![](MMM-DHT-Sensor.png)
+## Installation:
 
-## Installation
+In your terminal, go to your MagicMirror's Module folder:
+```shell
+cd ~/MagicMirror/modules
+```
 
-```bash
-git clone https://github.com/ryck/MMM-DHT-Sensor.git
-cd MMM-DHT-Sensor
+Clone this repository:
+```shell
+git clone https://github.com/grenagit/MMM-DHT-Sensor
+```
+
+Go to your MMM-DHT-Sensor's Module folder:
+```shell
+cd ~/MagicMirror/modules/MMM-DHT-Sensor
+```
+
+Install dependencies:
+```shell
 npm install
 ```
 
-## Config
+Configure the module in your config.js file.
 
-The entry in `config.js` can include the following options:
+## Update:
 
-| Option             | Description                                                                                                                                                                                                                                           |
-| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `sensorPin`        | **Required** This is the GPIO pin the sensor is connected to. **Note:** This is not the hardware pin number.<br><br>**Type:** `integer`<br>                                                                                                           |
-| `sensorType`       | **Required** This is the the sensor type. It should work for DHT11, DHT22 and AM2302 sensors<br><br>**Type:** `integer`<br> **Possible values:** `11` for DHT11 or `22` for DHT22 / AM2302                                                            |
-| `units`            | What units to use. Specified by config.js <br><br>**Type:** `string`<br>**Possible values:** config.units = Specified by config.js, `metric` = Celsius, `imperial` =Fahrenheit <br> **Default value:** `config.units`                                 |
-| `updateInterval`   | How often the sendor data is updated.<br><br>**Type:** `integer`<br>**Default value:** `1 hour`                                                                                                                                                       |
-| `relativeScale`    | Relative scale to choose the temparature icon.<br><br>**Type:** `integer`<br>**Default value:** `30`                                                                                                                                                  |
-| `initialLoadDelay` | The initial delay before loading. If you have multiple modules that use the same API key, you might want to delay one of the requests. (Milliseconds) <br><br>**Type:** `integer`<br>**Possible values:** `1000` - `5000` <br> **Default value:** `0` |
-| `animationSpeed`   | Speed of the update animation. (Milliseconds) <br><br>**Type:** `integer`<br>**Possible values:**`0` - `5000` <br> **Default value:** `1000` (1 second)                                                                                               |
-| `debug`            | Show debug information. <br><br> **Possible values:** `true` or `false` <br> **Default value:** `false`                                                                                                                                               |
-
-Here is an example of an entry in `config.js`
-
+In your terminal, go to your MMM-DHT-Sensor's Module folder:
+```shell
+cd ~/MagicMirror/modules/MMM-DHT-Sensor
 ```
-{
-	module: "MMM-DHT-Sensor",
-	position: "top_right",
-	header: "Upstairs",
-	config: {
-		sensorPin: 2,
-		sensorType: 22,
-		updateInterval: 60 * 60 * 1000,
-		initialLoadDelay: 0,
-		animationSpeed: 1000,
-		units: "metric",
-		relativeScale: 35,
-		debug: false
+
+Incorporate changes from this repository:
+```shell
+git pull
+```
+
+Install dependencies:
+```shell
+npm install
+```
+
+## Configuration:
+
+### Basic configuration
+
+To use this module, add it to the modules array in the `config/config.js` file:
+```javascript
+modules: [
+	{
+		module: "MMM-DHT-Sensor",
+		position: "top_left",
+		config: {
+			sensorPin: 2,
+    	sensorType: 11, // 11 for DHT11 or 22 for DHT22 / AM2302
+		}
 	}
-},
+]
 ```
 
-## Notes
+### Options
 
-- A good resource to know the GPIO/Hardware pin number is (https://pinout.xyz/)
+The following properties can be configured:
+
+| Option                       | Description
+| ---------------------------- | -----------
+| `sensorPin`                  | The [GPIO pin](https://pinout.xyz/) of the sensor. <br><br> This value is **REQUIRED**
+| `sensorType`                 | The sensor type (DHT11, DHT22 or AM2302).<br><br> This value is **REQUIRED**
+| `units`                      | What units to use. Specified by config.js <br><br> **Possible values:** `config.units` = Specified by config.js, `metric` = Celsius, `imperial` = Fahrenheit <br> **Default value:** `config.units`
+| `updateInterval`             | How often does the content needs to be fetched? (Milliseconds) <br><br> **Possible values:** `1000` - `86400000` <br> **Default value:** `1 * 60 * 60 * 1000` (1 hour)
+| `animationSpeed`             | Speed of the update animation. (Milliseconds) <br><br> **Possible values:**`0` - `5000` <br> **Default value:** `1000` (1 second)
+| `relativeScale`              | Relative scale to choose the temparature icon. <br><br> **Possible values:** `true` (round to integer) or `false` (display exact value with decimal point) <br> **Default value:** `false`
+| `roundTemp`                  | Round temperature value to nearest integer. <br><br> **Possible values:** `1` - `100` <br> **Default value:** `30`
+| `initialLoadDelay`           | The initial delay before loading. If you have multiple modules that use the same API key, you might want to delay one of the requests. (Milliseconds) <br><br> **Possible values:** `1000` - `5000` <br> **Default value:**  `0`
+| `retryDelay`                 | The delay before retrying after a request failure. (Milliseconds) <br><br> **Possible values:** `1000` - `60000` <br> **Default value:**  `2500` (2,5 seconds)                                                                                                                                       |
 
 ## Notifications
 
@@ -60,30 +87,6 @@ This module implements the following notifications:
 - **INDOOR_TEMPERATURE** (int) Temperature in Celsius
 - **INDOOR_HUMIDITY** (int) Humidity in relative humidity (%)
 
-## Dependencies
+## License:
 
-- [node-dht-sensor](https://github.com/momenso/node-dht-sensor) (installed via `npm install`)
-
-## Issues
-
-```
-WARNING! Could not load config file. Starting with default configuration. Error found: Error: The module '/home/pi/MagicMirror/modules/MMM-DHT-Sensor/node_modules/node-dht-sensor/build/Release/node_dht_sensor.node'
-was compiled against a different Node.js version using
-NODE_MODULE_VERSION 48. This version of Node.js requires
-NODE_MODULE_VERSION 53. Please try re-compiling or re-installing
-the module (for instance, using `npm rebuild` or`npm install`).
-```
-
-If you get this error after installing the module (or your MagicMirror is just a black screen) try this:
-
-```bash
-cd MMM-DHT-Sensor
-npm run rebuild
-```
-
-## Thanks To...
-
-- [Cato Antonsen](https://github.com/prasanthsasikumar) for the [MMM-Temperature-Humidity](https://github.com/prasanthsasikumar/MMM-Temperature-Humidity) module, which I used as reference.
-- [Nick Wootton](https://github.com/MichMich) for the [MMM-UKLiveBusStopInfo](https://github.com/nwootton/MMM-UKLiveBusStopInfo) module, which I used as reference.
-- [Nigel Daniels](https://github.com/nigel-daniels/) for the [MMM-Tube-Status](https://github.com/nigel-daniels/MMM-Tube-Status) module, which I used as reference.
-- [Michael Teeuw](https://github.com/MichMich) for the [MagicMirror2](https://github.com/MichMich/MagicMirror/) framework that made this module possible.
+This module is licensed under the MIT License
