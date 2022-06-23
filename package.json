@@ -1,7 +1,7 @@
 {
   "name": "MMM-DHT-Sensor",
   "version": "2.0.0",
-  "description": "Module for a Magic Mirror device display the current marine weather.",
+  "description": "Module for a Magic Mirror device display the current temperature and humidity from DHT11, DHT22 and AM2302 sensors.",
   "main": "MMM-DHT-Sensor.js",
   "author": "Grena",
   "license": "MIT",
